@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    >
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/learn"
+        android:scaleType="centerCrop"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="100dp"
+        android:text="E-learning"
+        android:textColor="@android:color/white"
+        android:textSize="50sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="105dp"
+        android:layout_marginEnd="112dp"
+        android:text=" Add New Lecture"
+        android:textColor="@android:color/white"
+        android:textSize="30sp" />
+
+    <LinearLayout
+        android:layout_width="302dp"
+        android:layout_height="259dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="66dp"
+        android:layout_marginBottom="190dp"
+        android:background="#B3FFFFFF"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:text="Lecture Name"
+            android:textColor="#497BA3"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/add_new_lecture_text"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:hint="Ex: xyz"
+            android:textAlignment="center"
+            android:textSize="15sp" />
+
+
+        <Button
+            android:id="@+id/browse"
+            android:layout_width="123dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:background="#497BA3"
+            android:onClick="select_lecture_pdf_file"
+            android:text="Upload Fil"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/store_lecture"
+            android:layout_width="70dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:background="#497BA3"
+            android:onClick="add_new_lecture_btn"
+            android:text="Add"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    >
+
+    <ImageView
+        android:id="@+id/app_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/learn" />
+
+    <TextView
+        android:id="@+id/app_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="68dp"
+        android:layout_marginBottom="79dp"
+        android:text=" E-Learning"
+        android:textColor="#FFFFFF"
+        android:textSize="50sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="264dp"
+        android:layout_height="220dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginEnd="73dp"
+        android:layout_marginBottom="169dp"
+        android:background="#B3FFFFFF"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/register_as_instructor"
+            android:layout_width="180dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="#497BA3"
+            android:onClick="register_instructor_view"
+            android:text="Instructor"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/register_as_student"
+            android:layout_width="180dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:background="#497BA3"
+            android:onClick="register_student_view"
+            android:text="Student"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/login_redirect"
+            android:layout_width="180dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:background="#497BA3"
+            android:onClick="login_view"
+            android:text="Login"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/activity_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="148dp"
+        android:layout_marginEnd="124dp"
+        android:layout_marginBottom="94dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text=" Register as: "
+        android:textColor="#FFFFFF"
+        android:textSize="30sp" />
+
+</RelativeLayout>
