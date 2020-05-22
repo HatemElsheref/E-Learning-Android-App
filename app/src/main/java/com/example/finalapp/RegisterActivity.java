@@ -1,13 +1,22 @@
 package com.example.finalapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.example.finalapp.Models.Auth;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+
 import org.json.JSONObject;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -18,6 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
     private String email;
     private String password;
     private String role;
+    private String deviceToken;
     private JSONObject UserInfo;
 
 
@@ -42,8 +52,13 @@ public class RegisterActivity extends AppCompatActivity {
         name=user_name.getText().toString();
         email=user_email.getText().toString();
         password=user_password.getText().toString();
+        //store device token in shared preferences
+        this.getDeviceToken();
+        //get device token from shared preverences
+        SharedPreferences sharedPreferences=getSharedPreferences("deviceToken", MODE_PRIVATE);
+        this.deviceToken=sharedPreferences.getString("device_token", "no token saved in shared preferences");
         if (!name.isEmpty() && name!=null && !email.isEmpty() && email!=null && !password.isEmpty() && password!=null){
-            Auth auth=new Auth(""+name,""+email,""+password,""+role);
+            Auth auth=new Auth(""+name,""+email,""+password,""+role,""+this.deviceToken);
             UserInfo=auth.Register();
 
             if (UserInfo==null){
@@ -66,7 +81,25 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
     }
+    public void getDeviceToken(){
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("device token", "getInstanceId failed", task.getException());
+                            return;
+                        }
 
+                        // Get new Instance ID token
+
+                        SharedPreferences sharedPreferences=getSharedPreferences("deviceToken", MODE_PRIVATE);
+                        SharedPreferences.Editor myEdit= sharedPreferences.edit();
+                        myEdit.putString("device_token", task.getResult().getToken());
+                        myEdit.commit();
+                    }
+                });
+    }
 
 
 }

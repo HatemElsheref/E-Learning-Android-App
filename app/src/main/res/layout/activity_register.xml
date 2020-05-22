@@ -7,7 +7,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/learn"
+        android:src="@drawable/back1"
         android:scaleType="centerCrop"
         />
 
@@ -42,7 +42,6 @@
         android:layout_centerVertical="true"
         android:layout_marginEnd="66dp"
         android:layout_marginBottom="64dp"
-        android:background="#B3FFFFFF"
         android:orientation="vertical">
 
         <TextView
@@ -51,7 +50,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
             android:text="Name"
-            android:textColor="#497BA3"
+            android:textColor="#fff"
             android:textSize="20sp" />
 
         <EditText
@@ -62,6 +61,7 @@
             android:layout_marginTop="10dp"
             android:hint="Ex: Hatem"
             android:textAlignment="center"
+            android:background="#ddd"
             android:textSize="15sp" />
 
         <TextView
@@ -70,7 +70,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:text="E-Mail"
-            android:textColor="#497BA3"
+            android:textColor="#fff"
             android:textSize="20sp" />
 
         <EditText
@@ -81,6 +81,7 @@
             android:layout_marginTop="10dp"
             android:hint="Ex: abo3mo@gmail.com"
             android:textAlignment="center"
+            android:background="#ddd"
             android:textSize="15sp" />
 
         <TextView
@@ -89,7 +90,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:text="Password"
-            android:textColor="#497BA3"
+            android:textColor="#fff"
             android:textSize="20sp" />
 
         <EditText
@@ -101,6 +102,7 @@
             android:hint="******"
             android:inputType="textPassword"
             android:textAlignment="center"
+            android:background="#ddd"
             android:textSize="15sp" />
 
         <Button

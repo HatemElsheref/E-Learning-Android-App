@@ -1,7 +1,6 @@
 package com.example.finalapp.Helper;
 
 
-import android.app.ProgressDialog;
 import android.content.Context;
 
 import android.content.Intent;
@@ -10,25 +9,25 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.BaseAdapter;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.example.finalapp.EditClass;
+import androidx.annotation.NonNull;
+
+import com.example.finalapp.EditClassActivity;
 import com.example.finalapp.LecturesActivity;
 import com.example.finalapp.Models.Room;
 import com.example.finalapp.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 public class RoomList extends BaseAdapter implements ListAdapter {
     private ArrayList<Room> list = new ArrayList<Room>();
@@ -60,7 +59,7 @@ public class RoomList extends BaseAdapter implements ListAdapter {
 
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, final ViewGroup parent) {
         View view = convertView;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -75,6 +74,7 @@ public class RoomList extends BaseAdapter implements ListAdapter {
             public void onClick(View v) {
                 Intent intent=new Intent(context, LecturesActivity.class);
                 intent.putExtra("userToken",token);
+                intent.putExtra("role","instructor");
                 intent.putExtra("classId",list.get(position).id);
                 context.startActivity(intent);
             }
@@ -82,9 +82,8 @@ public class RoomList extends BaseAdapter implements ListAdapter {
 
 
         //Handle buttons and add onClickListeners
-        Button deleteBtn = (Button)view.findViewById(R.id.delete_btn);
-        Button editBtn = (Button)view.findViewById(R.id.edit_btn);
-
+        ImageView deleteBtn = (ImageView)view.findViewById(R.id.delete_btn);
+        ImageView editBtn = (ImageView)view.findViewById(R.id.edit_btn);
         deleteBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -93,6 +92,19 @@ public class RoomList extends BaseAdapter implements ListAdapter {
                 JSONObject jsonObject=Kernal.sendResourceRequest(uri,"DELETE",null);
                 if (jsonObject != null){
                     try {
+                        String paths=jsonObject.get("paths").toString();
+                       if (!paths.isEmpty() && paths.length()>10){
+                           String pathsArray[];
+                           paths=paths.replace("[", "");
+                           paths=paths.replace("]", "");
+                           paths=paths.replace("\"", "");
+                           pathsArray=paths.split(",");
+
+                           for (int i=0;i<pathsArray.length;i++){
+                               remove_attached_lectures(classID,pathsArray[i]);
+                               System.out.println(pathsArray[i]);
+                           }
+                       }
                         Toast.makeText(context, jsonObject.get("result").toString(), Toast.LENGTH_SHORT).show();
                     }catch (Exception e){
                         Toast.makeText(context, "Class Deleted ", Toast.LENGTH_SHORT).show();
@@ -104,33 +116,6 @@ public class RoomList extends BaseAdapter implements ListAdapter {
                     Toast.makeText(context, "Failed Operation", Toast.LENGTH_SHORT).show();
                     notifyDataSetChanged();
                 }
-
-//                try{
-//                    URL url=new URL(uri);
-//                    BufferedReader bufferedReader;
-//                    HttpURLConnection connection=(HttpURLConnection)url.openConnection();
-//                    connection.setRequestMethod("POST");
-//                    String activeDeleteMethod="_method=DELETE";
-//                    connection.setDoOutput(true);
-//                    connection.setDoInput(true);
-//                    connection.setRequestProperty("Content-Language", "en-US");
-//                    connection.setRequestProperty("Accept", "application/json");
-//                    connection.setRequestProperty("Content-Length",""+Integer.toString(activeDeleteMethod.getBytes().length));
-//                    DataOutputStream wr = new DataOutputStream (connection.getOutputStream ());
-//                    wr.writeBytes(activeDeleteMethod);
-//                    wr.flush();
-//                    wr.close();
-//                    InputStream is = connection.getInputStream();
-//                    bufferedReader = new BufferedReader(new InputStreamReader(is));
-//                    JSONObject jsonObject=new JSONObject(bufferedReader.readLine());
-//                     list.remove(position); //or some other task
-//                    notifyDataSetChanged();
-//                    Toast.makeText(context, jsonObject.get("result").toString(), Toast.LENGTH_SHORT).show();
-//
-//                }catch (Exception e){
-//                    System.out.println(e.getMessage()+"==============>>exception of connection");
-//                }
-
             }
         });
         editBtn.setOnClickListener(new View.OnClickListener(){
@@ -140,7 +125,7 @@ public class RoomList extends BaseAdapter implements ListAdapter {
                 int classID=list.get(position).id;
                 String className=list.get(position).name;
                 String classCode=list.get(position).code;
-                Intent intent=new Intent(context, EditClass.class);
+                Intent intent=new Intent(context, EditClassActivity.class);
                 intent.putExtra("userToken", token);
                 intent.putExtra("classId", classID);
                 intent.putExtra("className", className);
@@ -154,5 +139,28 @@ public class RoomList extends BaseAdapter implements ListAdapter {
 
         return view;
     }
-
+    public void remove_attached_lectures(int classID, String path){
+        String uri=Routes.delete_lecture+classID+"?token="+token;
+        RemoveLecture(path);
+        JSONObject jsonObject=Kernal.sendResourceRequest(uri,"DELETE",null);
+    }
+    private void RemoveLecture(String path)
+    {
+        FirebaseStorage fbs=FirebaseStorage.getInstance();
+        StorageReference sr=fbs.getReference();
+        sr=sr.child("Lectures/"+path);
+        sr.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(context, "Lecture Removed With Attached File", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Uh-oh, an error occurred!
+                System.out.println(exception.getMessage());
+                Toast.makeText(context, "Failed To Remove Attached File", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }

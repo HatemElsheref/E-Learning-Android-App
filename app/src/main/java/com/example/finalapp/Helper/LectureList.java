@@ -3,54 +3,32 @@ package com.example.finalapp.Helper;
 
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.StrictMode;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-
-import com.example.finalapp.EditClass;
-import com.example.finalapp.LecturesActivity;
 import com.example.finalapp.Models.Lecture;
-import com.example.finalapp.Models.Room;
 import com.example.finalapp.R;
-import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
 import org.json.JSONObject;
-import org.json.JSONStringer;
-
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.sql.Blob;
 import java.util.ArrayList;
 
 public class LectureList extends BaseAdapter implements ListAdapter {
@@ -100,31 +78,33 @@ public class LectureList extends BaseAdapter implements ListAdapter {
         TextView listItemText = (TextView)view.findViewById(R.id.lectures_item_string);
         listItemText.setText(list.get(position).name);
         //Handle buttons and add onClickListeners
-        Button deleteBtn = (Button)view.findViewById(R.id.delete_lecture);
-        Button downloadBtn = (Button)view.findViewById(R.id.download_lecture);
+        ImageView deleteBtn = (ImageView)view.findViewById(R.id.delete_lecture);
 
-        deleteBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                int classID=list.get(position).id;
-                String uri=Routes.delete_lecture+classID+"?token="+token;
-                RemoveLecture(list.get(position).path);
-                JSONObject jsonObject=Kernal.sendResourceRequest(uri,"DELETE",null);
-                if (jsonObject != null){
-                    try {
-                        Toast.makeText(context, jsonObject.get("result").toString(), Toast.LENGTH_SHORT).show();
-                    }catch (Exception e){
-                        Toast.makeText(context, "Lecture Deleted ", Toast.LENGTH_SHORT).show();
-                        System.out.println(e.getMessage());
-                    }
-                    list.remove(position); //or some other task
-                    notifyDataSetChanged();
-                }else{
-                    Toast.makeText(context, "Failed Operation", Toast.LENGTH_SHORT).show();
-                    notifyDataSetChanged();
-                }
-            }
-        });
+        ImageView downloadBtn = (ImageView)view.findViewById(R.id.download_lecture);
+
+           deleteBtn.setOnClickListener(new View.OnClickListener(){
+               @Override
+               public void onClick(View v) {
+                   int classID=list.get(position).id;
+                   String uri=Routes.delete_lecture+classID+"?token="+token;
+                   RemoveLecture(list.get(position).path);
+                   JSONObject jsonObject=Kernal.sendResourceRequest(uri,"DELETE",null);
+                   if (jsonObject != null){
+                       try {
+                           Toast.makeText(context, jsonObject.get("result").toString(), Toast.LENGTH_SHORT).show();
+                       }catch (Exception e){
+                           Toast.makeText(context, "Lecture Deleted ", Toast.LENGTH_SHORT).show();
+                           System.out.println(e.getMessage());
+                       }
+                       list.remove(position); //or some other task
+                       notifyDataSetChanged();
+                   }else{
+                       Toast.makeText(context, "Failed Operation", Toast.LENGTH_SHORT).show();
+                       notifyDataSetChanged();
+                   }
+               }
+           });
+
         downloadBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {

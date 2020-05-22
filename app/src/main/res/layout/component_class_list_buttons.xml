@@ -11,34 +11,31 @@
         android:layout_alignParentLeft="true"
         android:paddingLeft="8dp"
         android:textSize="18sp"
-        android:textStyle="bold"
-        />
+        android:textStyle="bold"/>
 
-    <Button
-        android:id="@+id/delete_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="5dp"
-        android:background="#D31408"
-        android:text="Delete"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        android:textStyle="bold" />
 
-    <Button
+
+    <ImageView
+        android:layout_width="37dp"
+        android:layout_height="38dp"
+        android:layout_alignParentRight="false"
         android:id="@+id/edit_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:background="@drawable/edit"
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp"
         android:layout_toLeftOf="@id/delete_btn"
-        android:background="#4CAF50"
         android:capitalize="characters"
-        android:text="Edit"
         android:textColor="#FFFFFF"
         android:textSize="18sp" />
+
+    <ImageView
+        android:id="@+id/delete_btn"
+        android:layout_width="37dp"
+        android:layout_height="38dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/trash" />
 
 
 

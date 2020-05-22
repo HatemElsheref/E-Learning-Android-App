@@ -11,12 +11,14 @@ public class Auth {
     private String USER_PASSWORD=null;
     private String USER_TOKEN=null;
     private String USER_ROLE=null;
+    private String DEVICE_TOKEN=null;
 
-    public Auth(String USER_NAME, String USER_EMAIL, String USER_PASSWORD, String USER_ROLE) {
+    public Auth(String USER_NAME, String USER_EMAIL, String USER_PASSWORD, String USER_ROLE,String device_token) {
         this.USER_NAME = USER_NAME;
         this.USER_EMAIL = USER_EMAIL;
         this.USER_PASSWORD = USER_PASSWORD;
         this.USER_ROLE = USER_ROLE;
+        this.DEVICE_TOKEN = device_token;
     }
 
     public Auth(String USER_EMAIL, String USER_PASSWORD) {
@@ -63,6 +65,16 @@ public class Auth {
     public void setUSER_ROLE(String USER_ROLE) {
         this.USER_ROLE = USER_ROLE;
     }
+
+
+    public void setDEVICE_TOKEN(String device_token) {
+        this.DEVICE_TOKEN = device_token;
+    }
+
+    public String getDEVICE_TOKEN() {
+        return DEVICE_TOKEN;
+    }
+
     public JSONObject Login(){
         JSONObject jsonObject=new JSONObject();
        try {
@@ -81,6 +93,7 @@ public class Auth {
            jsonObject.put("email", this.getUSER_EMAIL());
            jsonObject.put("password",this.getUSER_PASSWORD());
            jsonObject.put("role",this.getUSER_ROLE());
+           jsonObject.put("device_token",this.getDEVICE_TOKEN());
            JSONObject userinfo=Kernal.sendPostRequest(Routes.register, jsonObject, null);
            return userinfo;
        }catch (Exception e){

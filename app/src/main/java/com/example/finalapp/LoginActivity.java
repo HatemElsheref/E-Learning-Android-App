@@ -52,13 +52,19 @@ public class LoginActivity extends AppCompatActivity {
                     auth.setUSER_TOKEN(UserInfo.getString("access_token"));
                    // System.out.println(auth.getUSER_TOKEN()+"*//////////////*");
                     Intent intent;
-                    if (UserInfo.getString("role")=="instructor"){
+                   JSONObject report= Kernal.sendSingleGetRequest(Routes.report+"?token="+UserInfo.getString("access_token"));
+                    System.out.println(report.toString());
+                   if (UserInfo.getString("role").equalsIgnoreCase("instructor")){
                          intent=new Intent(LoginActivity.this,InstructorDashboardActivity.class);
-                    }else{
+                       intent.putExtra("classes",report.getString("instructor_rooms"));
+                   }else{
                         //redirect to student dashboard activity
-                         intent=new Intent(LoginActivity.this,InstructorDashboardActivity.class);
+                         intent=new Intent(LoginActivity.this,StudentDashboardActivity.class);
+                         intent.putExtra("classes",report.getString("student_rooms"));
+//                         intent=new Intent(LoginActivity.this,InstructorDashboardActivity.class);
                     }
                     //* redirect to user home activity with token ++ toast message *//
+                    intent.putExtra("lectures",report.getString("lectures"));
                     intent.putExtra("userToken",auth.getUSER_TOKEN());
                     startActivity(intent);
                 }catch (Exception e){

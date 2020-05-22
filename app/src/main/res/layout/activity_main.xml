@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:clickable="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/learn" />
+        android:src="@drawable/back1" />
 
     <TextView
         android:id="@+id/app_title"
@@ -35,7 +35,6 @@
         android:layout_centerInParent="true"
         android:layout_marginEnd="73dp"
         android:layout_marginBottom="169dp"
-        android:background="#B3FFFFFF"
         android:gravity="center"
         android:orientation="vertical">
 

@@ -62,7 +62,6 @@ public class LecturesActivity extends AppCompatActivity {
 
         //instantiate custom adapter
         LectureList adapter = new LectureList(list, this,token);
-
         //handle listview and assign adapter
         ListView lView = (ListView) findViewById(R.id.list_of_lectures);
         lView.setAdapter(adapter);

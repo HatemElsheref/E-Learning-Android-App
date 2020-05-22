@@ -3,6 +3,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +11,8 @@ import com.example.finalapp.Models.ClassActivity;
 
 public class InstructorDashboardActivity extends AppCompatActivity {
     public String token;
+    TextView Lectures;
+    TextView Rooms;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,6 +24,10 @@ public class InstructorDashboardActivity extends AppCompatActivity {
         }
         Intent intent=getIntent();
         token=intent.getStringExtra("userToken");
+        Lectures=findViewById(R.id.lectures_number);
+        Rooms=findViewById(R.id.classes_number);
+        Lectures.setText("Lectures ( "+intent.getStringExtra("lectures")+" )");
+        Rooms.setText("Classes ( "+intent.getStringExtra("classes")+" )");
         //System.out.println("in Instructor Dashboard Activity ********* "+token);
 
     }
